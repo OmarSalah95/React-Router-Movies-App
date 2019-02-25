@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-
+import MovieCard from './MovieCard'
 export default class Movie extends Component {
   constructor(props) {
     super(props);
@@ -11,7 +11,7 @@ export default class Movie extends Component {
 
   componentDidMount() {
     // change this line to grab the id passed on the URL
-    const id = 1;
+    const id = this.props.match.params.id;
     this.fetchMovie(id);
   }
 
@@ -36,32 +36,18 @@ export default class Movie extends Component {
   //   const addToSavedList = this.props.addToSavedList;
   //   addToSavedList(this.state.movie)
   // }
-
+ 
   render() {
     if (!this.state.movie) {
-      return <div>Loading movie information...</div>;
+      return <p>Loading movie information...</p>;
     }
 
-    const { title, director, metascore, stars } = this.state.movie;
     return (
       <div className="save-wrapper">
-        <div className="movie-card">
-          <h2>{title}</h2>
-          <div className="movie-director">
-            Director: <em>{director}</em>
-          </div>
-          <div className="movie-metascore">
-            Metascore: <strong>{metascore}</strong>
-          </div>
-          <h3>Actors</h3>
-
-          {stars.map(star => (
-            <div key={star} className="movie-star">
-              {star}
-            </div>
-          ))}
+        <MovieCard movie={this.state.movie} />
+        <div onClick={this.props.addToSavedList} className="save-button">
+          Save
         </div>
-        <div className="save-button">Save</div>
       </div>
     );
   }
